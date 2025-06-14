@@ -15,6 +15,9 @@ df = df.dropna(subset=["Latitude", "Longitude"])
 geometry = [Point(xy) for xy in zip(df["Longitude"], df["Latitude"])]
 gdf_311 = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
 
+nyc_shape = gpd.read_file("/NYC311-Flooding-Bayesian-Model/data/cb_2018_36_tract_500k.shp")
+nyc_shape = nyc_shape.to_crs("EPSG:4326")
+
 joined = gpd.sjoin(gdf_311, nyc_shape, how="inner", predicate="within")
 
 category_counts = (
