@@ -28,7 +28,7 @@ joined["census_tract"] = joined["GEOID"].astype(str).str[:12]
 #  Clean + build stan_data
 
 # ---------- 0. Path configuration ----------
-adj_path = "/content/data/tract_adjacency_connected.npz"
+adj_path = "/NYC311-Flooding-Bayesian-Model/data/tract_adjacency_connected.npz"
 
 # ---------- 1. Basic cleaning ----------
 df = joined.copy()
