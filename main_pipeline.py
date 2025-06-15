@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 
-df = pd.read_csv("/NYC311-Flooding-Bayesian-Model/data/311_Service.csv", encoding='latin1', on_bad_lines='warn', low_memory=False)  # flooding complaints
+df = pd.read_csv("/NYC311-Flooding-Bayesian-Model/data/flood_311.csv", encoding='latin1', on_bad_lines='warn', low_memory=False)  # flooding complaints
 df = df.dropna(subset=["Latitude", "Longitude"])
 
 geometry = [Point(xy) for xy in zip(df["Longitude"], df["Latitude"])]
