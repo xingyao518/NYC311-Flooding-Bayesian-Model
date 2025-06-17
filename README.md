@@ -1,3 +1,4 @@
+# Steps:
 1. Clone the GitHub
 git clone https://github.com/xingyao518/NYC311-Flooding-Bayesian-Model.git
 
