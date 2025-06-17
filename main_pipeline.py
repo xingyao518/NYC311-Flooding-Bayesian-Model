@@ -6,6 +6,10 @@ from scipy.sparse import csr_matrix
 from sklearn.preprocessing import OneHotEncoder
 import json
 from pathlib import Path
+import cmdstanpy, json, os, multiprocessing, textwrap, pathlib
+from cmdstanpy import CmdStanModel
+from pathlib import Path
+import textwrap, json, tempfile, os
 
 # --------- Load and preprocess 311 flood data -----------
 df = pd.read_csv("data/flood_311.csv", encoding='latin1', on_bad_lines='warn', low_memory=False)
@@ -136,15 +140,9 @@ print(f"   N_tract     : {len(tract_list)}")
 print(f"   N_category  : {len(cat_list)}")
 
 
-import cmdstanpy, json, os, multiprocessing, textwrap, pathlib
-from cmdstanpy import CmdStanModel
-import numpy as np
-import pandas as pd
-from pathlib import Path
-import textwrap, json, tempfile, os
 
 # ================================================================
-#  8.  Stan program (inline)  +  fit  +  posterior prediction
+#  8.  Stan program  +  fit  +  posterior prediction
 # ================================================================
 
 
@@ -282,7 +280,7 @@ fit = model.sample(
     output_dir="stan_output/my_run",
 )
 
-print(fit.summary().loc[["beta0","theta"],["Mean","R_hat","Ess_bulk"]])
+print(fit.summary().loc[["beta0","theta"]])
 
 # ---------- quick posterior-predictive check ---------------
 draws = fit.draws_pd(vars=["y_rep"])
