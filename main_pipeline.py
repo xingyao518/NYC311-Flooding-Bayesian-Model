@@ -90,7 +90,7 @@ A_coo   = csr_matrix(
 
 node1, node2 = [], []
 for i, j in zip(A_coo.row, A_coo.col):
-    if i < j:
+    if i < j and i < N_tract and j < N_tract:
         node1.append(i + 1)
         node2.append(j + 1)
 N_edges = len(node1)
@@ -151,7 +151,7 @@ import textwrap, json, tempfile, os
 stan_program = textwrap.dedent(r"""
 functions {
   /* ---- partial log-likelihood for reduce_sum ------------- */
-  real partial_sum_lpmf(int[] y_slice,
+  real partial_sum_lpmf(array[] int y_slice,
                         int start, int end,
                         matrix X_tot,
                         vector log_d,
@@ -187,12 +187,12 @@ data {
 
   // exposure
   vector<lower=0>[N_incidents] duration;
-  int<lower=0> y[N_incidents];
+  array[N_incidents] int<lower=0> y;
 
   // ICAR adjacency
   int<lower=0> N_edges;
-  int<lower=1, upper=N_tract> node1[N_edges];
-  int<lower=1, upper=N_tract> node2[N_edges];
+  array[N_edges] int<lower=1, upper=N_tract> node1;
+  array[N_edges] int<lower=1, upper=N_tract> node2;
 }
 
 transformed data {
@@ -266,7 +266,9 @@ generated quantities {
 """)
 
 # ---------- compile ----------------------------------------
-model = CmdStanModel(stan_code=stan_program)
+with open("model.stan", "w") as f:
+    f.write(stan_program)
+model = CmdStanModel(stan_file="model.stan")
 
 # ---------- sample -----------------------------------------
 fit = model.sample(
