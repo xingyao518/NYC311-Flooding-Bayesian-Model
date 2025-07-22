@@ -287,14 +287,3 @@ draws = fit.draws_pd(vars=["y_rep"])
 ppc_counts = draws.filter(regex=r"y_rep\[\d+\]").astype(int)
 print("\nPosterior-predictive mean duplicate-count (first 10 incidents):")
 print(ppc_counts.mean(axis=0)[:10].to_numpy())
-
-from visualize.plot_map_of_colors import plot_map_of_colors
-
-tract_list = sorted(df["census_tract"].unique())
-
-plot_map_of_colors(
-    shapefile_path="data/cb_2018_36_tract_500k.shp",
-    beta_tract_path="stan_output/my_run/output-1.csv",
-    tract_list=tract_list,
-    output_path="figs/beta_map.png"
-)
