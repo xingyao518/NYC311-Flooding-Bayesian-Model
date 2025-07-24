@@ -17,7 +17,7 @@
 
 5. Install dependent packages
 
-  pip install pandas geopandas shapely numpy scipy scikit-learn matplotlib cmdstanpy
+  pip install pandas geopandas shapely numpy scipy scikit-learn seaborn matplotlib cmdstanpy
 
 6. Run the model
 
